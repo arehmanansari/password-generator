@@ -1,0 +1,80 @@
+.App .title {
+  font-size: 4rem;
+  background-color: goldenrod;
+  padding: 1.5rem;
+  border-radius: 3rem;
+}
+.App {
+  margin-left: 1.7remrem;
+}
+.heading {
+  font-size: 2rem;
+  padding-left: 1.7rem;
+}
+.content {
+  font-size: 1.3rem;
+  padding: 1rem;
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.password {
+  font-size: 1.3rem;
+  padding: 1rem;
+}
+.button {
+  background-color: goldenrod;
+  padding: 0.7rem;
+}
+.modifiers {
+  padding: 2rem;
+  font-size: 1.2rem;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+  border: 1rem solid gray;
+  border-radius: 7rem;
+  
+}
+.generate {
+  padding: 1rem;
+  font-size: 0.9rem;
+  background-color: goldenrod;
+}
+.dropdown {
+  padding: 1.5rem;
+}
+.button-dropdown {
+  padding-left: 1.7rem;
+}
+.generate-button {
+  padding-left: 1.7rem;
+  padding-top: 1rem;
+}
+.topnav {
+  overflow: hidden;
+  background-color: #333;
+  border-radius: 1rem;
+}
+.topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px; 
+  text-decoration: none;
+  font-size: 1.4rem;
+}
+
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.topnav a.active {
+  background-color: #04aa6d;
+  color: white;
+}
+.dropdown {
+  text-align: right;
+}
+.top{
+  display: flex;
+}
