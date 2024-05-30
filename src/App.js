@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useEffect } from "react";
 import generatePassword from "./Components/password";
 import RangeSlider from "./Components/RangeSlider";
 import Navbar from "./Components/Navbar";
@@ -8,6 +8,16 @@ import "./App.css";
 function App() {
   const [passwords, setPasswords] = useState([]);
   const [parentVal, setParentVal] = useState(8);
+  const [selectData, setSelectData] = useState(1);
+
+  const selectValue =[
+    {value: 1, title: 'Generate 1 Password'},
+    {value: 5, title: 'Generate 5 Password'},
+    {value: 10, title: 'Generate 10 Password'},
+    {value: 20, title: 'Generate 20 Password'},
+    {value: 50, title: 'Generate 50 Password'},
+    {value: 100, title: 'Generate 100 Password'},
+  ];
 
   function clickGeneratePassword() {
     let numberOfTimes = document.getElementById("repeatGeneration").value;
@@ -33,6 +43,11 @@ function App() {
     }),
     [parentVal]
   );
+
+  useEffect(()=>{
+    console.log('selectedValue: ',selectData);
+  },[selectData]);
+
   return (
     <div className="App">
       <Navbar />
@@ -52,15 +67,22 @@ function App() {
         <div className="button-dropdown">
           <button className="button">Copy Password</button>
           <span className="dropdown">
-            <select id="repeatGeneration">
-              <option value="1" selected>
+            <select id="repeatGeneration" value={selectData} onChange={(e)=> {setSelectData(e.target.value); console.log(e.target.value);}}>
+              {selectValue.map((item, index)=> {
+                return(
+                  <option key={index} value={item.value} onChange={()=> {setSelectData(item.value);}}>
+                {item.title}
+              </option>
+                )
+              })}
+              {/* <option value="1" selected>
                 Generate 1 Password
               </option>
               <option value="5">Generate 5 Password</option>
               <option value="10">Generate 10 Password</option>
               <option value="20">Generate 20 Password</option>
               <option value="50">Generate 50 Password</option>
-              <option value="100">Generate 100 Password</option>
+              <option value="100">Generate 100 Password</option> */}
             </select>
           </span>
         </div>
