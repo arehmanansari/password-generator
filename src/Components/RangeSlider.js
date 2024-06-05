@@ -1,43 +1,37 @@
-import React, {
-  memo,
-  useState,
-  useEffect,
-} from "react";
+import React, { useState, useEffect } from "react";
+import '../App.css';
 
-const RangeSlider = memo(
-  ({ classes, label, onChange, value, ...sliderProps }) => {
+const RangeSlider = ({ value, setValue }) => {
     const [sliderVal, setSliderVal] = useState(0);
     const [mouseState, setMouseState] = useState(null);
 
     useEffect(() => {
-      setSliderVal(value);
+      setSliderVal(value); 
     }, [value]);
 
     const changeCallback = (e) => {
       setSliderVal(e.target.value);
+      // console.log('slider:',sliderVal);
     };
-
-    useEffect(() => {
+    
+    useEffect(()=>{
       if (mouseState === "up") {
-        onChange(sliderVal);
+        setValue(sliderVal);
       }
     }, [mouseState]);
+    
     return (
       <div className="range-slider">
-        <p>{label}</p>
+        <p>Password Length</p>
         <input
           type="range"
           value={sliderVal}
-          {...sliderProps}
-          className={`slider ${classes}`}
-          id="myRange"
           onChange={changeCallback}
           onMouseDown={() => setMouseState("down")}
           onMouseUp={() => setMouseState("up")}
         /> <span>{sliderVal} characters</span>
       </div>
     );
-  }
-);
+  };
 
 export default RangeSlider;

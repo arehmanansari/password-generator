@@ -1,52 +1,53 @@
-import { useState, useCallback, useMemo, useEffect } from "react";
+/* eslint-disable no-loop-func */
+/* eslint-disable no-unused-vars */
+import { useState, useEffect } from "react";
 import generatePassword from "./Components/password";
 import RangeSlider from "./Components/RangeSlider";
 import Navbar from "./Components/Navbar";
 import Radio from "./Components/Radio";
 import "./App.css";
+import { selectValue }  from './constant/constant';
 
 function App() {
   const [passwords, setPasswords] = useState([]);
-  const [parentVal, setParentVal] = useState(8);
-  const [selectData, setSelectData] = useState(1);
+  const [passwordLen, setPasswordLen] = useState(8);
+  const [numberOfPassword, setNumberOfPassword] = useState(1);
+ 
 
-  const selectValue =[
-    {value: 1, title: 'Generate 1 Password'},
-    {value: 5, title: 'Generate 5 Password'},
-    {value: 10, title: 'Generate 10 Password'},
-    {value: 20, title: 'Generate 20 Password'},
-    {value: 50, title: 'Generate 50 Password'},
-    {value: 100, title: 'Generate 100 Password'},
-  ];
-
-  function clickGeneratePassword() {
-    let numberOfTimes = document.getElementById("repeatGeneration").value;
-    document.getElementById("listPasswords").innerHTML = "";
-
-    for (let i = 1; i <= numberOfTimes; i++) {
-      passwords.push(generatePassword(parentVal));
+  const generateRandomPassword = () => {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=[]{}|;:,.<>?';
+    let password = '';
+    if (numberOfPassword > 1) {
+      
+      for (let i = 0; i < numberOfPassword; i++) {
+        // create password
+        for (let i = 0; i < passwordLen; i++) {
+          const randomIndex = Math.floor(Math.random() * characters.length);
+          password += characters[randomIndex];
+        }
+        // set password
+        setPasswords(prevPassword => [...prevPassword, password]);
+      }
+      
+    }
+    
+    for (let i = 0; i < passwordLen; i++) {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      password += characters[randomIndex];
     }
 
-    setPasswords([...passwords]);
-  }
+    setPasswords(password);
+    }
+  const onLengthChange = (data)=>{
+    setPasswordLen(data);
+  };
+  
+ useEffect(() => {
+  console.log('password length',passwordLen);
+ },[passwordLen]);
+  
 
-  const sliderValueChanged = useCallback((val) => {
-    setParentVal(val);
-  });
-  const sliderProps = useMemo(
-    () => ({
-      min: 5,
-      max: 100,
-      value: parentVal,
-      step: 1,
-      onChange: (e) => sliderValueChanged(e),
-    }),
-    [parentVal]
-  );
-
-  useEffect(()=>{
-    console.log('selectedValue: ',selectData);
-  },[selectData]);
+  
 
   return (
     <div className="App">
@@ -55,44 +56,43 @@ function App() {
         This Tool Will Help You Generate Secure,Strong And Random Passwords. To
         Help Ensure Your Security
       </div>
+
+      {/* ------   Password show   --------- */}
+
       <div className="heading">Password</div>
       <div className="password">
-        <ul id="listPasswords">
-          {passwords.map((password) => (
-            <li>{password}</li>
-          ))}
-        </ul>
+        <ul id="listPasswords">{passwords}</ul>
       </div>
+
+      {/* ---------  times to generate password    ------------- */}
+
       <div className="modifiers">
         <div className="button-dropdown">
           <button className="button">Copy Password</button>
           <span className="dropdown">
-            <select id="repeatGeneration" value={selectData} onChange={(e)=> {setSelectData(e.target.value); console.log(e.target.value);}}>
-              {selectValue.map((item, index)=> {
+            <select value={numberOfPassword} onChange={(e)=> {setNumberOfPassword(e.target.value); console.log(e.target.value);}}>
+              {selectValue.map((item, i)=> {
                 return(
-                  <option key={index} value={item.value} onChange={()=> {setSelectData(item.value);}}>
+                  <option key={i} value={item.value} >
                 {item.title}
               </option>
                 )
               })}
-              {/* <option value="1" selected>
-                Generate 1 Password
-              </option>
-              <option value="5">Generate 5 Password</option>
-              <option value="10">Generate 10 Password</option>
-              <option value="20">Generate 20 Password</option>
-              <option value="50">Generate 50 Password</option>
-              <option value="100">Generate 100 Password</option> */}
             </select>
           </span>
         </div>
         <div>
-          <RangeSlider
-            {...sliderProps}
-            label="Password Length"
-            classes="additional-css-classes"
-          />
+
+         {/* ----------- Slider ------------- */}
+
+         <RangeSlider
+         value = {passwordLen}
+         setValue ={onLengthChange}
+         />
         </div>
+
+        {/* -------   Options for password  ------- */}
+
         <div>
           <input type="checkbox" id="incUpperKeys" />
           <label>Include UpperCase (e.g. A-Z)</label>
@@ -112,8 +112,11 @@ function App() {
             <input type="text" />
           </label>
         </div>
+
+        {/* ----------  generate password  --------- */}
+
         <div className="generate-button">
-          <button className="generate" onClick={clickGeneratePassword}>
+          <button className="generate" onClick={generateRandomPassword} >
             Generate Password
           </button>
         </div>
